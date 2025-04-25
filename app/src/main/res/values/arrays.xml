@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categorias_animales">
+        <item>Mamíferos</item>
+        <item>Aves</item>
+        <item>Reptiles</item>
+        <item>Anfibios</item>
+        <item>Peces</item>
+    </string-array>
+</resources> 

@@ -1,0 +1,74 @@
+{
+    "animales": [
+        {
+            "id": "leon-1",
+            "nombre": "León",
+            "especie": "Panthera leo",
+            "habitat": "Sabana africana",
+            "descripcion": "El león es un gran felino carnívoro que vive en manadas.",
+            "imagenUri": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+            "categoria": "Mamíferos",
+            "temperaturaCorporal": 37.5,
+            "tiempoGestacion": 110,
+            "tipoAlimentacion": "Carnívoro",
+            "tipoPelaje": "Corto y denso",
+            "esNocturno": true
+        },
+        {
+            "id": "aguila-1",
+            "nombre": "Águila Real",
+            "especie": "Aquila chrysaetos",
+            "habitat": "Montañas",
+            "descripcion": "El águila real es una de las aves rapaces más grandes.",
+            "imagenUri": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Aquila_chrysaetos_-_01.jpg",
+            "categoria": "Aves",
+            "envergaduraAlas": 220.0,
+            "colorPlumaje": "Marrón dorado",
+            "tipoPico": "Gancho",
+            "velocidadVuelo": 320.0,
+            "tipoPresa": "Pequeños mamíferos"
+        },
+        {
+            "id": "cocodrilo-1",
+            "nombre": "Cocodrilo del Nilo",
+            "especie": "Crocodylus niloticus",
+            "habitat": "Ríos y lagos africanos",
+            "descripcion": "Uno de los reptiles más grandes y peligrosos del mundo.",
+            "imagenUri": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Nile_crocodile_head.jpg",
+            "categoria": "Reptiles",
+            "longitudTotal": 500,
+            "tipoEscamas": "Óseas",
+            "temperaturaCorporal": 30,
+            "tipoReproduccion": "Ovíparo",
+            "dietaPrincipal": "Carnívoro"
+        },
+        {
+            "id": "rana-1",
+            "nombre": "Rana Dorada",
+            "especie": "Phyllobates terribilis",
+            "habitat": "Selva tropical",
+            "descripcion": "Una de las especies más venenosas del mundo.",
+            "imagenUri": "https://upload.wikimedia.org/wikipedia/commons/8/83/Phyllobates_terribilis_golden_form.jpg",
+            "categoria": "Anfibios",
+            "colorPiel": "Dorado",
+            "tipoVeneno": "Neurotóxico",
+            "habitatReproductivo": "Terrestre/Acuático",
+            "tipoMetamorfosis": "Completa",
+            "longitudCuerpo": 5
+        },
+        {
+            "id": "tiburon-1",
+            "nombre": "Tiburón Blanco",
+            "especie": "Carcharodon carcharias",
+            "habitat": "Océanos templados",
+            "descripcion": "El depredador marino más grande y temido.",
+            "imagenUri": "https://upload.wikimedia.org/wikipedia/commons/5/56/White_shark.jpg",
+            "categoria": "Peces",
+            "longitudMaxima": 600,
+            "tipoAletas": "Cartilaginosas",
+            "profundidadMaxima": 1200,
+            "velocidadNado": 56,
+            "tipoRespiracion": "Branquial"
+        }
+    ]
+} 

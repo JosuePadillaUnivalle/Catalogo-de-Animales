@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Layouts -->
+    <item name="layoutMamifero" type="id"/>
+    <item name="layoutAve" type="id"/>
+    <item name="layoutAveRapaz" type="id"/>
+    <item name="layoutReptil" type="id"/>
+    <item name="layoutAnfibio" type="id"/>
+    <item name="layoutPez" type="id"/>
+    <item name="layoutTipoAlimentacion" type="id"/>
+    <item name="layoutTipoVuelo" type="id"/>
+    <item name="layoutTipoReproduccion" type="id"/>
+    <item name="layoutEtapaVida" type="id"/>
+    <item name="layoutTipoAletas" type="id"/>
+
+    <!-- EditTexts -->
+    <item name="etNombre" type="id"/>
+    <item name="etEspecie" type="id"/>
+    <item name="etHabitat" type="id"/>
+    <item name="etDescripcion" type="id"/>
+    <item name="etImagenUrl" type="id"/>
+    <item name="etValor" type="id"/>
+    <item name="etTipoPelaje" type="id"/>
+    <item name="etTipoAlimentacion" type="id"/>
+    <item name="etTemperaturaCorporal" type="id"/>
+    <item name="etTiempoGestacion" type="id"/>
+    <item name="etEnvergaduraAlas" type="id"/>
+    <item name="etColorPlumaje" type="id"/>
+    <item name="etTipoPico" type="id"/>
+    <item name="etVelocidadVuelo" type="id"/>
+    <item name="etTipoPresa" type="id"/>
+    <item name="etTipoEscamas" type="id"/>
+    <item name="etTipoReproduccion" type="id"/>
+    <item name="etTipoPiel" type="id"/>
+    <item name="etEtapaVida" type="id"/>
+    <item name="etTipoAgua" type="id"/>
+    <item name="etTipoAletas" type="id"/>
+    <item name="etTipoVuelo" type="id"/>
+    <item name="etColoracion" type="id"/>
+
+    <!-- Switches -->
+    <item name="switchEsNocturno" type="id"/>
+    <item name="switchPuedeVolar" type="id"/>
+    <item name="switchEsRapaz" type="id"/>
+    <item name="switchEsVenenoso" type="id"/>
+    <item name="switchEsVenenosoAnfibio" type="id"/>
+    <item name="switchEsDepredador" type="id"/>
+
+    <!-- ImageViews -->
+    <item name="ivPreview" type="id"/>
+    <item name="imageViewAnimal" type="id"/>
+
+    <!-- Spinners -->
+    <item name="spinnerCategoria" type="id"/>
+
+    <!-- Buttons -->
+    <item name="btnCancelar" type="id"/>
+    <item name="btnGuardar" type="id"/>
+</resources> 

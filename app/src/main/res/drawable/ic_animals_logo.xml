@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    
+    <!-- Círculo de fondo -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,12m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0"/>
+    
+    <!-- Cara del león -->
+    <path
+        android:fillColor="#FFA000"
+        android:pathData="M12,4C7.58,4 4,7.58 4,12s3.58,8 8,8 8,-3.58 8,-8 -3.58,-8 -8,-8zM12,18.5c-3.31,0 -6,-2.69 -6,-6s2.69,-6 6,-6 6,2.69 6,6 -2.69,6 -6,6z"/>
+    
+    <!-- Ojos -->
+    <path
+        android:fillColor="#795548"
+        android:pathData="M9,11m-1.25,0a1.25,1.25 0,1 1,2.5 0a1.25,1.25 0,1 1,-2.5 0"/>
+    <path
+        android:fillColor="#795548"
+        android:pathData="M15,11m-1.25,0a1.25,1.25 0,1 1,2.5 0a1.25,1.25 0,1 1,-2.5 0"/>
+    
+    <!-- Nariz -->
+    <path
+        android:fillColor="#795548"
+        android:pathData="M12,13.5m-0.75,0a0.75,0.75 0,1 1,1.5 0a0.75,0.75 0,1 1,-1.5 0"/>
+    
+    <!-- Melena -->
+    <path
+        android:fillColor="#FFA000"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM12,20c-4.41,0 -8,-3.59 -8,-8s3.59,-8 8,-8 8,3.59 8,8 -3.59,8 -8,8z"/>
+</vector> 

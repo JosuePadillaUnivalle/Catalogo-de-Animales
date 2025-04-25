@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#87CEEB"/>
+            <corners android:radius="8dp"/>
+        </shape>
+    </item>
+    <item android:gravity="center">
+        <vector
+            android:width="64dp"
+            android:height="64dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <path
+                android:fillColor="#FFFFFF"
+                android:pathData="M23,11.5L19.95,8.45C19.95,8.45 20.76,5.32 18.79,3.35C16.83,1.38 13.69,2.19 13.69,2.19L10.64,-0.86L9.23,0.55L12.28,3.6C12.28,3.6 11.47,6.73 13.44,8.7C15.4,10.67 18.54,9.86 18.54,9.86L21.59,12.91L23,11.5M15.5,9.42L13.44,7.36C12.46,6.38 12.46,4.83 13.44,3.85C14.42,2.87 15.97,2.87 16.95,3.85C17.93,4.83 17.93,6.38 16.95,7.36L15.5,9.42M8.71,13.06L10.76,15.11L8.71,17.16L6.66,15.11L8.71,13.06M13.91,18.36L11.86,16.31L13.91,14.26L15.96,16.31L13.91,18.36M16.31,15.96L14.26,13.91L16.31,11.86L18.36,13.91L16.31,15.96M3.59,11.24L4.64,12.29L3.59,13.34L2.54,12.29L3.59,11.24M2.54,14.44L3.59,15.49L2.54,16.54L1.49,15.49L2.54,14.44M5.74,14.44L6.79,15.49L5.74,16.54L4.69,15.49L5.74,14.44Z"/>
+        </vector>
+    </item>
+</layer-list> 

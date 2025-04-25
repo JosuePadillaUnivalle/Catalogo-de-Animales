@@ -1,0 +1,49 @@
+CONTEXTO PARA CURSOR AI - CATÁLOGO DE ANIMALES
+
+DESCRIPCIÓN DEL PROYECTO:
+- Aplicación Android nativa en Java para catalogar y gestionar información de animales
+- Repositorio GitHub: https://github.com/JosuePadillaUnivalle/Catalogo-de-Animales.git
+
+FUNCIONALIDADES IMPLEMENTADAS:
+1. Gestión de Animales:
+   - Agregar nuevos animales con información detallada
+   - Visualizar lista de animales por categorías
+   - Búsqueda y filtrado de animales
+   - Soporte para imágenes de animales
+
+2. Estructura del Proyecto:
+   - Fragmentos implementados para la navegación
+   - Sistema de diálogos para agregar animales
+   - Interfaz OnAnimalAddedListener para comunicación entre componentes
+   - RecyclerView para mostrar la lista de animales
+
+3. Clases Principales:
+   - Animal.java: Modelo de datos para animales
+   - AnimalListFragment.java: Fragmento principal para mostrar listas de animales
+   - AddAnimalDialogFragment.java: Diálogo para agregar nuevos animales
+   - MainActivity.java: Actividad principal de la aplicación
+
+4. Características Técnicas:
+   - Manejo de imágenes optimizado
+   - Sistema de categorías implementado
+   - Interfaz de usuario con Material Design
+   - Persistencia de datos local
+
+TAREAS EN PROGRESO:
+- Optimización del rendimiento en la carga de imágenes
+- Mejora en la gestión de memoria
+- Implementación de funcionalidades de edición y eliminación de animales
+
+NOTAS IMPORTANTES:
+- La aplicación utiliza fragments para la navegación
+- Se implementó un sistema de listeners para la comunicación entre componentes
+- Las imágenes se manejan de forma optimizada para evitar problemas de memoria
+- Se utiliza RecyclerView con adaptadores personalizados para las listas
+
+PRÓXIMAS MEJORAS PLANIFICADAS:
+1. Implementar edición de animales existentes
+2. Agregar función de eliminación de animales
+3. Mejorar la interfaz de usuario
+4. Optimizar el rendimiento general de la aplicación
+
+Este archivo sirve como guía para que Cursor AI pueda continuar el desarrollo y mantenimiento del proyecto en cualquier PC, manteniendo la consistencia en el desarrollo y las decisiones de diseño implementadas. 
