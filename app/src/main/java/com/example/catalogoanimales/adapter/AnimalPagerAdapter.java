@@ -27,17 +27,17 @@ public class AnimalPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         try {
-            // Verificar si ya existe un fragmento para esta posición
-            Fragment existingFragment = fragmentMap.get(position);
+        // Verificar si ya existe un fragmento para esta posición
+        Fragment existingFragment = fragmentMap.get(position);
             if (existingFragment != null && existingFragment.isAdded()) {
-                return existingFragment;
-            }
+            return existingFragment;
+        }
 
             // Si no existe o no está añadido, crear uno nuevo
-            String categoria = categorias.get(position);
-            AnimalListFragment newFragment = AnimalListFragment.newInstance(categoria);
-            fragmentMap.put(position, newFragment);
-            return newFragment;
+        String categoria = categorias.get(position);
+        AnimalListFragment newFragment = AnimalListFragment.newInstance(categoria);
+        fragmentMap.put(position, newFragment);
+        return newFragment;
         } catch (Exception e) {
             e.printStackTrace();
             // En caso de error, devolver un fragmento vacío

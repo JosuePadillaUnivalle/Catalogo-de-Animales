@@ -23,6 +23,9 @@ import android.widget.Toast;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.catalogoanimales.api.AnimalesResponse;
 import java.io.IOException;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements AddAnimalDialog.OnAnimalAddedListener, OnAnimalCategoryChangedListener {
     private static final long SEARCH_DELAY_MS = 300;
@@ -70,22 +73,29 @@ public class MainActivity extends AppCompatActivity implements AddAnimalDialog.O
 
     private void cargarAnimales() {
         swipeRefreshLayout.setRefreshing(true);
-        try {
-            AnimalesResponse response = ApiClient.getAnimales();
-            if (response != null && response.getAnimales() != null) {
-                List<Animal> animales = response.getAnimales();
-                Toast.makeText(MainActivity.this, "Número de animales cargados: " + animales.size(), Toast.LENGTH_LONG).show();
-                procesarAnimales(animales);
-            } else {
-                Toast.makeText(MainActivity.this, "La lista de animales está vacía", Toast.LENGTH_LONG).show();
+        
+        ApiClient.getApiService().getAnimales().enqueue(new Callback<AnimalesResponse>() {
+            @Override
+            public void onResponse(Call<AnimalesResponse> call, Response<AnimalesResponse> response) {
+                swipeRefreshLayout.setRefreshing(false);
+                if (response.isSuccessful() && response.body() != null) {
+                    AnimalesResponse animalesResponse = response.body();
+                    List<Animal> animales = animalesResponse.getAnimales();
+                    Toast.makeText(MainActivity.this, "Número de animales cargados: " + animales.size(), Toast.LENGTH_LONG).show();
+                    procesarAnimales(animales);
+                } else {
+                    Toast.makeText(MainActivity.this, "Error al cargar los animales", Toast.LENGTH_LONG).show();
+                }
             }
-        } catch (IOException e) {
-            String errorMsg = "Error al cargar los animales: " + e.getMessage();
-            Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        } finally {
-            swipeRefreshLayout.setRefreshing(false);
-        }
+
+            @Override
+            public void onFailure(Call<AnimalesResponse> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
+                String errorMsg = "Error al cargar los animales: " + t.getMessage();
+                Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
     }
 
     private void procesarAnimales(List<Animal> animales) {

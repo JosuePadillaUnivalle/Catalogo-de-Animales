@@ -7,7 +7,7 @@ public class Reptil extends Animal {
     private boolean esVenenoso;
     private double valor = 0.0;
 
-    public Reptil(String nombre, String especie, String habitat, String descripcion,
+    public Reptil(String nombre, String especie, String habitat, String descripcion, 
                  String imagenUri, String categoria, String tipoEscamas,
                  String tipoReproduccion, boolean esVenenoso) {
         super(nombre, especie, habitat, descripcion, imagenUri, categoria);

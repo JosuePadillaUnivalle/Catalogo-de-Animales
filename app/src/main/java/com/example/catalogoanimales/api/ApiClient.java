@@ -5,13 +5,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.example.catalogoanimales.model.Animal;
 import com.example.catalogoanimales.model.AnimalImpl;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String ANIMALS_FILE = "animales.json";
-    private static Context context;
+    private static final String BASE_URL = "https://raw.githubusercontent.com/JosuePadillaUnivalle/Catalogo-de-Animales/main/";
+    private static ApiService apiService;
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Animal.class, new com.google.gson.JsonDeserializer<Animal>() {
                 @Override
@@ -22,26 +21,20 @@ public class ApiClient {
             .create();
 
     public static void init(Context appContext) {
-        context = appContext.getApplicationContext();
+        if (apiService == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            apiService = retrofit.create(ApiService.class);
+        }
     }
 
-    public static AnimalesResponse getAnimales() throws IOException {
-        String jsonString = loadJSONFromAsset();
-        return gson.fromJson(jsonString, AnimalesResponse.class);
-    }
-
-    private static String loadJSONFromAsset() throws IOException {
-        if (context == null) {
+    public static ApiService getApiService() {
+        if (apiService == null) {
             throw new IllegalStateException("ApiClient must be initialized with init(Context) first");
         }
-        
-        String json;
-        try (InputStream is = context.getAssets().open(ANIMALS_FILE)) {
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            json = new String(buffer, StandardCharsets.UTF_8);
-        }
-        return json;
+        return apiService;
     }
 } 
