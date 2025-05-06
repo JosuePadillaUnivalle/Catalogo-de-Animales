@@ -88,13 +88,14 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            app:endIconMode="dropdown_menu"
+            android:hint="Categoría">
 
-            <AutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/spinnerCategoria"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Categoría" />
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo para el valor -->
@@ -395,30 +396,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="¿Es depredador?" />
-        </LinearLayout>
-
-        <!-- Botones -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
-
-            <Button
-                android:id="@+id/btnCancelar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:text="Cancelar" />
-
-            <Button
-                android:id="@+id/btnGuardar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:text="Guardar" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView> 

@@ -12,7 +12,10 @@
             "tiempoGestacion": 110,
             "tipoAlimentacion": "Carnívoro",
             "tipoPelaje": "Corto y denso",
-            "esNocturno": true
+            "esNocturno": true,
+            "esperanzaVida": 15,
+            "velocidadMaxima": 80,
+            "alturaPromedio": 1.2
         },
         {
             "id": "aguila-1",
@@ -26,7 +29,10 @@
             "colorPlumaje": "Marrón dorado",
             "tipoPico": "Gancho",
             "velocidadVuelo": 320.0,
-            "tipoPresa": "Pequeños mamíferos"
+            "tipoPresa": "Pequeños mamíferos",
+            "esperanzaVida": 25,
+            "velocidadMaxima": 320,
+            "alturaPromedio": 0.9
         },
         {
             "id": "cocodrilo-1",
@@ -40,7 +46,10 @@
             "tipoEscamas": "Óseas",
             "temperaturaCorporal": 30,
             "tipoReproduccion": "Ovíparo",
-            "dietaPrincipal": "Carnívoro"
+            "dietaPrincipal": "Carnívoro",
+            "esperanzaVida": 70,
+            "velocidadMaxima": 35,
+            "alturaPromedio": 0.5
         },
         {
             "id": "rana-1",
@@ -54,7 +63,10 @@
             "tipoVeneno": "Neurotóxico",
             "habitatReproductivo": "Terrestre/Acuático",
             "tipoMetamorfosis": "Completa",
-            "longitudCuerpo": 5
+            "longitudCuerpo": 5,
+            "esperanzaVida": 10,
+            "velocidadMaxima": 8,
+            "alturaPromedio": 0.08
         },
         {
             "id": "tiburon-1",
@@ -68,7 +80,10 @@
             "tipoAletas": "Cartilaginosas",
             "profundidadMaxima": 1200,
             "velocidadNado": 56,
-            "tipoRespiracion": "Branquial"
+            "tipoRespiracion": "Branquial",
+            "esperanzaVida": 70,
+            "velocidadMaxima": 56,
+            "alturaPromedio": 4.5
         }
     ]
 } 

@@ -68,6 +68,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         private final TextView tvNombre;
         private final TextView tvEspecie;
         private final TextView tvCategoria;
+        private final TextView tvEsperanzaVida;
 
         AnimalViewHolder(View itemView) {
             super(itemView);
@@ -76,12 +77,14 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
             tvNombre = itemView.findViewById(R.id.textViewNombre);
             tvEspecie = itemView.findViewById(R.id.textViewEspecie);
             tvCategoria = itemView.findViewById(R.id.textViewCategoria);
+            tvEsperanzaVida = itemView.findViewById(R.id.textViewEsperanzaVida);
         }
 
         void bind(Animal animal, int position) {
             tvNombre.setText(animal.getNombre());
             tvEspecie.setText(animal.getEspecie());
             tvCategoria.setText(animal.getCategoria());
+            tvEsperanzaVida.setText(String.format("Esperanza de vida: %d", animal.getEsperanzaVida()));
 
             // Establecer color según el tipo de animal
             int colorResId;

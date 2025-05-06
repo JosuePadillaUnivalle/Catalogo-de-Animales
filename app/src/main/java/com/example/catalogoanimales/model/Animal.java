@@ -16,6 +16,9 @@ public abstract class Animal implements Serializable, Cloneable {
     private double pesoPromedio;
     private boolean isPredeterminado;
     protected double valor = 0.0;
+    private int esperanzaVida;
+    private double velocidadMaxima;
+    private double alturaPromedio;
 
     public Animal(String nombre, String especie, String habitat, String descripcion, String imagenUri, String categoria) {
         this.id = java.util.UUID.randomUUID().toString(); // Generamos un ID único al crear el animal
@@ -81,6 +84,15 @@ public abstract class Animal implements Serializable, Cloneable {
     public double getPesoPromedio() { return pesoPromedio; }
     public void setPesoPromedio(double pesoPromedio) { this.pesoPromedio = pesoPromedio; }
 
+    public int getEsperanzaVida() { return esperanzaVida; }
+    public void setEsperanzaVida(int esperanzaVida) { this.esperanzaVida = esperanzaVida; }
+
+    public double getVelocidadMaxima() { return velocidadMaxima; }
+    public void setVelocidadMaxima(double velocidadMaxima) { this.velocidadMaxima = velocidadMaxima; }
+
+    public double getAlturaPromedio() { return alturaPromedio; }
+    public void setAlturaPromedio(double alturaPromedio) { this.alturaPromedio = alturaPromedio; }
+
     @Override
     public Animal clone() {
         try {
@@ -97,6 +109,9 @@ public abstract class Animal implements Serializable, Cloneable {
             cloned.pesoPromedio = this.pesoPromedio;
             cloned.isPredeterminado = this.isPredeterminado;
             cloned.valor = this.valor;
+            cloned.esperanzaVida = this.esperanzaVida;
+            cloned.velocidadMaxima = this.velocidadMaxima;
+            cloned.alturaPromedio = this.alturaPromedio;
             return cloned;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("Error al clonar el animal", e);

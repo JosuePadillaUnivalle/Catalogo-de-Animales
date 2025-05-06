@@ -13,7 +13,10 @@
             "tipo": "Mamifero",
             "temperaturaCorporal": 37.5,
             "tiempoGestacion": 110,
-            "alimentacion": "Carnivoro"
+            "alimentacion": "Carnivoro",
+            "esperanzaVida": 15,
+            "velocidadMaxima": 80,
+            "alturaPromedio": 1.2
         },
         {
             "id": 2,
@@ -25,7 +28,10 @@
             "tipo": "Ave",
             "envergaduraAlas": 50.0,
             "colorPlumaje": "Gris",
-            "tipoPico": "Corto y fuerte"
+            "tipoPico": "Corto y fuerte",
+            "esperanzaVida": 6,
+            "velocidadMaxima": 77,
+            "alturaPromedio": 0.25
         },
         {
             "id": 3,
@@ -39,7 +45,10 @@
             "colorPlumaje": "Marrón dorado",
             "tipoPico": "Gancho",
             "velocidadVuelo": 320.0,
-            "tipoPresa": "Pequeños mamíferos"
+            "tipoPresa": "Pequeños mamíferos",
+            "esperanzaVida": 25,
+            "velocidadMaxima": 320,
+            "alturaPromedio": 0.9
         },
         {
             "id": 4,
@@ -51,7 +60,10 @@
             "tipo": "Reptil",
             "tipoEscamas": "Escamas duras",
             "reproduccion": "Oviparo",
-            "venenoso": false
+            "venenoso": false,
+            "esperanzaVida": 70,
+            "velocidadMaxima": 35,
+            "alturaPromedio": 0.5
         },
         {
             "id": 5,
@@ -63,7 +75,10 @@
             "tipo": "Anfibio",
             "tipoPiel": "Húmeda y permeable",
             "metamorfosis": true,
-            "etapaVida": "Adulto"
+            "etapaVida": "Adulto",
+            "esperanzaVida": 10,
+            "velocidadMaxima": 8,
+            "alturaPromedio": 0.08
         },
         {
             "id": 6,
@@ -75,7 +90,10 @@
             "tipo": "Pez",
             "tipoAgua": "Salada",
             "colorEscamas": "Gris azulado",
-            "depredador": true
+            "depredador": true,
+            "esperanzaVida": 70,
+            "velocidadMaxima": 56,
+            "alturaPromedio": 4.5
         }
     ]
 } 

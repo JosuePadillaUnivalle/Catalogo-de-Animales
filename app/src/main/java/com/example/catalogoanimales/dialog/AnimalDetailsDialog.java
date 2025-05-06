@@ -31,6 +31,9 @@ public class AnimalDetailsDialog extends DialogFragment {
         args.putString("categoria", animal.getCategoria());
         args.putString("tipo", animal.getClass().getSimpleName());
         args.putDouble("valor", animal.getValor());
+        args.putInt("esperanzaVida", animal.getEsperanzaVida());
+        args.putDouble("velocidadMaxima", animal.getVelocidadMaxima());
+        args.putDouble("alturaPromedio", animal.getAlturaPromedio());
 
         // Guardar características específicas
         if (animal instanceof Mamifero) {
@@ -100,6 +103,11 @@ public class AnimalDetailsDialog extends DialogFragment {
             tvHabitat.setText(habitat);
             tvDescripcion.setText(descripcion);
             tvValor.setText(String.format("$%.2f", valor));
+
+            // Agregar información adicional
+            addCaracteristica(layoutCaracteristicas, "Esperanza de vida", String.valueOf(args.getInt("esperanzaVida", 0)));
+            addCaracteristica(layoutCaracteristicas, "Velocidad máxima", args.getDouble("velocidadMaxima", 0) + " km/h");
+            addCaracteristica(layoutCaracteristicas, "Altura promedio", args.getDouble("alturaPromedio", 0) + " m");
 
             // Cargar imagen
             if (imagenUri != null && !imagenUri.isEmpty()) {

@@ -28,6 +28,7 @@ import com.example.catalogoanimales.model.Anfibio;
 import com.example.catalogoanimales.model.Pez;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.widget.AdapterView;
+import android.content.Context;
 
 public class EditAnimalDialogFragment extends DialogFragment {
     private static final String TAG = "EditAnimalDialogFragment";
@@ -210,7 +211,7 @@ public class EditAnimalDialogFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_add_animal, null);
+        View view = inflater.inflate(R.layout.dialog_edit_animal, null);
 
         // Inicializar vistas
         etNombre = view.findViewById(R.id.etNombre);
@@ -232,21 +233,26 @@ public class EditAnimalDialogFragment extends DialogFragment {
         switchEsRapaz = view.findViewById(R.id.switchEsRapaz);
         switchPuedeVolar = view.findViewById(R.id.switchPuedeVolar);
 
-        // Configurar el Spinner
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                getActivity(),
-                R.array.categorias_animales,
-                android.R.layout.simple_spinner_item
-        );
+        // Configurar el Spinner con los mismos nombres que las pestañas
+        String[] categorias = {"Mamíferos", "Aves", "Reptiles", "Anfibios", "Peces"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categorias);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategoria.setAdapter(adapter);
-        
-        // Establecer la categoría actual
+        // Forzar el despliegue del menú al hacer clic
+        spinnerCategoria.setInputType(android.text.InputType.TYPE_NULL);
+        spinnerCategoria.setKeyListener(null);
+        spinnerCategoria.setOnClickListener(v -> spinnerCategoria.showDropDown());
+        // Obtener referencia al TextInputLayout de categoría
+        final com.google.android.material.textfield.TextInputLayout textInputLayoutCategoria = view.findViewById(R.id.spinnerCategoria).getParent() instanceof com.google.android.material.textfield.TextInputLayout ? (com.google.android.material.textfield.TextInputLayout) view.findViewById(R.id.spinnerCategoria).getParent() : null;
+        // Solo aquí asignar la categoría actual y forzar hint flotante
         if (animalToEdit != null) {
-            int position = adapter.getPosition(animalToEdit.getCategoria());
-            if (position >= 0) {
-                spinnerCategoria.setSelection(position);
+            spinnerCategoria.setText(animalToEdit.getCategoria(), false);
+            if (textInputLayoutCategoria != null) {
+                textInputLayoutCategoria.setHintEnabled(true);
+                textInputLayoutCategoria.setHintAnimationEnabled(true);
             }
+            spinnerCategoria.clearFocus();
+            spinnerCategoria.requestFocus();
         }
 
         // Configurar el listener del Spinner
@@ -419,175 +425,118 @@ public class EditAnimalDialogFragment extends DialogFragment {
         }
 
         builder.setView(view)
-               .setTitle("Editar Animal")
-               .setPositiveButton("Guardar", (dialog, id) -> guardarAnimal())
-               .setNegativeButton("Cancelar", (dialog, id) -> dismiss());
+               .setTitle("Editar Animal");
 
-        return builder.create();
+        AlertDialog dialog = builder.create();
+
+        // Configurar listeners para los botones personalizados
+        Button btnGuardar = view.findViewById(R.id.btnGuardar);
+        Button btnCancelar = view.findViewById(R.id.btnCancelar);
+        btnGuardar.setOnClickListener(v -> {
+            guardarAnimal();
+        });
+        btnCancelar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        return dialog;
     }
 
     private void guardarAnimal() {
         String nombre = etNombre.getText().toString().trim();
         String descripcion = etDescripcion.getText().toString().trim();
-        String categoria = spinnerCategoria.getText().toString();
+        String categoria = spinnerCategoria.getText() != null ? spinnerCategoria.getText().toString().trim() : "";
+        // No modificar el valor, usarlo tal cual para que coincida con las pestañas
         String imagenUrl = etImagenUrl.getText().toString().trim();
-        
-        View dialogView = getDialog().getWindow().getDecorView();
-        EditText etEspecie = dialogView.findViewById(R.id.etEspecie);
-        EditText etHabitat = dialogView.findViewById(R.id.etHabitat);
-        
-        if (etEspecie == null || etHabitat == null) {
-            Toast.makeText(getContext(), "Error al obtener los campos del formulario", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        
         String especie = etEspecie.getText().toString().trim();
         String habitat = etHabitat.getText().toString().trim();
-
+        double valor = 0.0;
+        try {
+            valor = Double.parseDouble(etValor.getText().toString().trim());
+        } catch (Exception ignored) {}
         if (nombre.isEmpty() || descripcion.isEmpty() || especie.isEmpty() || habitat.isEmpty()) {
             Toast.makeText(getContext(), "Por favor complete todos los campos obligatorios", Toast.LENGTH_SHORT).show();
             return;
         }
+        // Actualizar campos básicos
+        animalToEdit.setNombre(nombre);
+        animalToEdit.setDescripcion(descripcion);
+        animalToEdit.setCategoria(categoria);
+        animalToEdit.setImagenUri(imagenUrl);
+        animalToEdit.setEspecie(especie);
+        animalToEdit.setHabitat(habitat);
+        animalToEdit.setValor(valor);
 
-        Animal animalEditado = null;
-        try {
-            // Mantener el ID del animal original o generar uno nuevo si no existe
-            String id = animalToEdit != null && animalToEdit.getId() != null ? 
-                       animalToEdit.getId() : 
-                       nombre.toLowerCase() + "-" + System.currentTimeMillis();
-
-            switch (categoria) {
-                case "Mamíferos":
-                    EditText etTemperaturaCorporal = dialogView.findViewById(R.id.etTemperaturaCorporal);
-                    EditText etTiempoGestacion = dialogView.findViewById(R.id.etTiempoGestacion);
-                    EditText etTipoAlimentacion = dialogView.findViewById(R.id.etTipoAlimentacion);
-                    SwitchMaterial switchEsNocturno = dialogView.findViewById(R.id.switchEsNocturno);
-                    
-                    double temperaturaCorporal = Double.parseDouble(etTemperaturaCorporal.getText().toString());
-                    int tiempoGestacion = Integer.parseInt(etTiempoGestacion.getText().toString());
-                    String tipoAlimentacion = etTipoAlimentacion.getText().toString();
-                    
-                    animalEditado = new Mamifero(nombre, especie, habitat, descripcion,
-                            imagenUrl, categoria, temperaturaCorporal, tiempoGestacion, tipoAlimentacion);
-                    
-                    EditText etTipoPelaje = dialogView.findViewById(R.id.etTipoPelaje);
-                    if (etTipoPelaje != null) {
-                        ((Mamifero) animalEditado).setTipoPelaje(etTipoPelaje.getText().toString());
-                    }
-                    if (switchEsNocturno != null) {
-                        ((Mamifero) animalEditado).setEsNocturno(switchEsNocturno.isChecked());
-                    }
-                    break;
-                case "Aves":
-                    EditText etEnvergaduraAlas = dialogView.findViewById(R.id.etEnvergaduraAlas);
-                    EditText etColorPlumaje = dialogView.findViewById(R.id.etColorPlumaje);
-                    EditText etTipoPico = dialogView.findViewById(R.id.etTipoPico);
-                    
-                    double envergaduraAlas = Double.parseDouble(etEnvergaduraAlas.getText().toString());
-                    String colorPlumaje = etColorPlumaje.getText().toString();
-                    String tipoPico = etTipoPico.getText().toString();
-                    
-                    if (switchEsRapaz != null && switchEsRapaz.isChecked()) {
-                        double velocidadVuelo = Double.parseDouble(etVelocidadVuelo.getText().toString());
-                        String tipoPresa = etTipoPresa.getText().toString();
-                        
-                        animalEditado = new AveRapaz(
-                            nombre,
-                            especie,
-                            habitat,
-                            descripcion,
-                            imagenUrl,
-                            categoria,
-                            envergaduraAlas,
-                            colorPlumaje,
-                            tipoPico,
-                            velocidadVuelo,
-                            tipoPresa
-                        );
-                    } else {
-                        animalEditado = new Ave(
-                            nombre,
-                            especie,
-                            habitat,
-                            descripcion,
-                            imagenUrl,
-                            categoria,
-                            envergaduraAlas,
-                            colorPlumaje,
-                            tipoPico
-                        );
-                        
-                        EditText etTipoVuelo = dialogView.findViewById(R.id.etTipoVuelo);
-                        if (etTipoVuelo != null) {
-                            ((Ave) animalEditado).setTipoVuelo(etTipoVuelo.getText().toString());
-                        }
-                        if (switchPuedeVolar != null) {
-                            ((Ave) animalEditado).setPuedeVolar(switchPuedeVolar.isChecked());
-                        }
-                    }
-                    break;
-                case "Reptiles":
-                    EditText etTipoEscamas = dialogView.findViewById(R.id.etTipoEscamas);
-                    EditText etTipoReproduccion = dialogView.findViewById(R.id.etTipoReproduccion);
-                    SwitchMaterial switchEsVenenosoReptil = dialogView.findViewById(R.id.switchEsVenenoso);
-                    
-                    String tipoEscamas = etTipoEscamas.getText().toString();
-                    String tipoReproduccion = etTipoReproduccion.getText().toString();
-                    boolean esVenenosoReptil = switchEsVenenosoReptil != null && switchEsVenenosoReptil.isChecked();
-                    
-                    animalEditado = new Reptil(nombre, especie, habitat, descripcion,
-                            imagenUrl, categoria, tipoEscamas, tipoReproduccion, esVenenosoReptil);
-                    break;
-                case "Anfibios":
-                    EditText etTipoPiel = dialogView.findViewById(R.id.etTipoPiel);
-                    EditText etEtapaVida = dialogView.findViewById(R.id.etEtapaVida);
-                    SwitchMaterial switchEsVenenosoAnfibio = dialogView.findViewById(R.id.switchEsVenenosoAnfibio);
-                    
-                    String tipoPiel = etTipoPiel.getText().toString();
-                    String etapaVida = etEtapaVida.getText().toString();
-                    boolean esVenenosoAnfibio = switchEsVenenosoAnfibio != null && switchEsVenenosoAnfibio.isChecked();
-                    
-                    animalEditado = new Anfibio(nombre, especie, habitat, descripcion,
-                            imagenUrl, categoria, tipoPiel, esVenenosoAnfibio);
-                    ((Anfibio) animalEditado).setEtapaVida(etapaVida);
-                    break;
-                case "Peces":
-                    EditText etTipoAgua = dialogView.findViewById(R.id.etTipoAgua);
-                    EditText etColoracion = dialogView.findViewById(R.id.etColoracion);
-                    SwitchMaterial switchEsDepredador = dialogView.findViewById(R.id.switchEsDepredador);
-                    
-                    String tipoAgua = etTipoAgua.getText().toString();
-                    String tipoAletas = etColoracion.getText().toString();
-                    boolean esDepredador = switchEsDepredador != null && switchEsDepredador.isChecked();
-                    
-                    animalEditado = new Pez(nombre, especie, habitat, descripcion,
-                            imagenUrl, categoria, tipoAgua, tipoAletas, esDepredador);
-                    break;
+        // Actualizar campos específicos si existen
+        if (animalToEdit instanceof Mamifero) {
+            Mamifero m = (Mamifero) animalToEdit;
+            if (etTemperaturaCorporal != null) {
+                try { m.setTemperaturaCorporal(Double.parseDouble(etTemperaturaCorporal.getText().toString())); } catch (Exception ignored) {}
             }
-
-            if (animalEditado != null && listener != null) {
-                // Establecer el ID del animal original
-                animalEditado.setId(id);
-                
-                // Establecer el valor del animal
-                if (etValor != null) {
-                    try {
-                        double valor = Double.parseDouble(etValor.getText().toString());
-                        animalEditado.setValor(valor);
-                    } catch (NumberFormatException e) {
-                        // Si hay un error al parsear el valor, usar el valor predeterminado
-                        animalEditado.calcularValor();
-                    }
-                }
-                
-                listener.onAnimalEdited(animalEditado);
-                Toast.makeText(getContext(), "Animal actualizado correctamente", Toast.LENGTH_SHORT).show();
-                dismiss();
+            if (etTiempoGestacion != null) {
+                try { m.setTiempoGestacion(Integer.parseInt(etTiempoGestacion.getText().toString())); } catch (Exception ignored) {}
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "Error al guardar el animal: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            if (etTipoAlimentacion != null) m.setTipoAlimentacion(etTipoAlimentacion.getText().toString());
+            EditText etTipoPelaje = getDialog().findViewById(R.id.etTipoPelaje);
+            if (etTipoPelaje != null) m.setTipoPelaje(etTipoPelaje.getText().toString());
+            SwitchMaterial switchEsNocturno = getDialog().findViewById(R.id.switchEsNocturno);
+            if (switchEsNocturno != null) m.setEsNocturno(switchEsNocturno.isChecked());
+        } else if (animalToEdit instanceof AveRapaz) {
+            AveRapaz ar = (AveRapaz) animalToEdit;
+            if (etEnvergaduraAlas != null) {
+                try { ar.setEnvergaduraAlas(Double.parseDouble(etEnvergaduraAlas.getText().toString())); } catch (Exception ignored) {}
+            }
+            if (etColorPlumaje != null) ar.setColorPlumaje(etColorPlumaje.getText().toString());
+            EditText etTipoPico = getDialog().findViewById(R.id.etTipoPico);
+            if (etTipoPico != null) ar.setTipoPico(etTipoPico.getText().toString());
+            if (etVelocidadVuelo != null) {
+                try { ar.setVelocidadVuelo(Double.parseDouble(etVelocidadVuelo.getText().toString())); } catch (Exception ignored) {}
+            }
+            if (etTipoPresa != null) ar.setTipoPresa(etTipoPresa.getText().toString());
+        } else if (animalToEdit instanceof Ave) {
+            Ave a = (Ave) animalToEdit;
+            if (etEnvergaduraAlas != null) {
+                try { a.setEnvergaduraAlas(Double.parseDouble(etEnvergaduraAlas.getText().toString())); } catch (Exception ignored) {}
+            }
+            if (etColorPlumaje != null) a.setColorPlumaje(etColorPlumaje.getText().toString());
+            EditText etTipoPico = getDialog().findViewById(R.id.etTipoPico);
+            if (etTipoPico != null) a.setTipoPico(etTipoPico.getText().toString());
+            EditText etTipoVuelo = getDialog().findViewById(R.id.etTipoVuelo);
+            if (etTipoVuelo != null) a.setTipoVuelo(etTipoVuelo.getText().toString());
+            SwitchMaterial switchPuedeVolar = getDialog().findViewById(R.id.switchPuedeVolar);
+            if (switchPuedeVolar != null) a.setPuedeVolar(switchPuedeVolar.isChecked());
+        } else if (animalToEdit instanceof Reptil) {
+            Reptil r = (Reptil) animalToEdit;
+            EditText etTipoEscamas = getDialog().findViewById(R.id.etTipoEscamas);
+            if (etTipoEscamas != null) r.setTipoEscamas(etTipoEscamas.getText().toString());
+            EditText etTipoReproduccion = getDialog().findViewById(R.id.etTipoReproduccion);
+            if (etTipoReproduccion != null) r.setTipoReproduccion(etTipoReproduccion.getText().toString());
+            SwitchMaterial switchEsVenenoso = getDialog().findViewById(R.id.switchEsVenenoso);
+            if (switchEsVenenoso != null) r.setEsVenenoso(switchEsVenenoso.isChecked());
+        } else if (animalToEdit instanceof Anfibio) {
+            Anfibio an = (Anfibio) animalToEdit;
+            EditText etTipoPiel = getDialog().findViewById(R.id.etTipoPiel);
+            if (etTipoPiel != null) an.setTipoPiel(etTipoPiel.getText().toString());
+            EditText etEtapaVida = getDialog().findViewById(R.id.etEtapaVida);
+            if (etEtapaVida != null) an.setEtapaVida(etEtapaVida.getText().toString());
+            SwitchMaterial switchEsVenenosoAnfibio = getDialog().findViewById(R.id.switchEsVenenosoAnfibio);
+            if (switchEsVenenosoAnfibio != null) an.setEsVenenoso(switchEsVenenosoAnfibio.isChecked());
+        } else if (animalToEdit instanceof Pez) {
+            Pez p = (Pez) animalToEdit;
+            EditText etTipoAgua = getDialog().findViewById(R.id.etTipoAgua);
+            if (etTipoAgua != null) p.setTipoAgua(etTipoAgua.getText().toString());
+            EditText etColoracion = getDialog().findViewById(R.id.etColoracion);
+            if (etColoracion != null) p.setColoracion(etColoracion.getText().toString());
+            SwitchMaterial switchEsDepredador = getDialog().findViewById(R.id.switchEsDepredador);
+            if (switchEsDepredador != null) p.setEsPredador(switchEsDepredador.isChecked());
         }
+
+        // Notificar cambios
+        if (listener != null) {
+            listener.onAnimalEdited(animalToEdit);
+        }
+        Toast.makeText(getContext(), "Animal actualizado correctamente", Toast.LENGTH_SHORT).show();
+        dismiss();
     }
 
     @Override
@@ -642,6 +591,16 @@ public class EditAnimalDialogFragment extends DialogFragment {
             case "Peces":
                 dialogView.findViewById(R.id.layoutPez).setVisibility(View.VISIBLE);
                 break;
+        }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (listener == null && getParentFragment() instanceof OnAnimalEditedListener) {
+            listener = (OnAnimalEditedListener) getParentFragment();
+        } else if (listener == null && context instanceof OnAnimalEditedListener) {
+            listener = (OnAnimalEditedListener) context;
         }
     }
 } 

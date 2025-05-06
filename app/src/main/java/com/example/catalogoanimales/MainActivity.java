@@ -247,19 +247,28 @@ public class MainActivity extends AppCompatActivity implements AddAnimalDialog.O
 
     @Override
     public void onAnimalCategoryChanged(Animal animal, String oldCategory, String newCategory) {
+        // Eliminar de la lista global si existe
+        AnimalListFragment.animalesGlobales.removeIf(a -> a.getId().equals(animal.getId()));
+        // Agregar el animal editado a la lista global
+        AnimalListFragment.animalesGlobales.add(animal);
+        // Depuración: mostrar el contenido de la lista global
+        StringBuilder sb = new StringBuilder();
+        sb.append("Animales globales: ").append(AnimalListFragment.animalesGlobales.size()).append("\n");
+        for (Animal a : AnimalListFragment.animalesGlobales) {
+            sb.append(a.getNombre()).append(" - ").append(a.getCategoria()).append("\n");
+        }
+        Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
+        // Recargar todos los fragmentos para reflejar el cambio
+        for (String categoria : categorias) {
+            AnimalListFragment fragment = getFragmentByCategory(categoria);
+            if (fragment != null) {
+                fragment.mostrarTodosLosAnimales();
+            }
+        }
+        // Cambiar a la pestaña de la nueva categoría
         int newPosition = categorias.indexOf(newCategory);
         if (newPosition != -1) {
             viewPager.setCurrentItem(newPosition);
-            
-            AnimalListFragment newCategoryFragment = getFragmentByCategory(newCategory);
-            if (newCategoryFragment != null) {
-                newCategoryFragment.addAnimalToList(animal);
-                
-                AnimalListFragment oldCategoryFragment = getFragmentByCategory(oldCategory);
-                if (oldCategoryFragment != null) {
-                    oldCategoryFragment.actualizarLista();
-                }
-            }
         }
     }
 }

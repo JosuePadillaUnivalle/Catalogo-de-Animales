@@ -49,7 +49,7 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
     private List<Animal> animalesFiltrados;
     private SwipeRefreshLayout swipeRefreshLayout;
     private OnAnimalCategoryChangedListener categoryChangedListener;
-    private static List<Animal> animalesGlobales = new ArrayList<>();
+    public static List<Animal> animalesGlobales = new ArrayList<>();
     private static List<Animal> animalesPredeterminados = new ArrayList<>();
     private static boolean predeterminadosCargados = false;
 
@@ -95,6 +95,9 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
         leon.setNombreCientifico("Panthera leo");
         leon.setEstadoConservacion("Vulnerable");
         leon.setPesoPromedio(190.0);
+        leon.setEsperanzaVida(35);  // Los leones viven entre 10-15 años, en escala 35/100
+        leon.setVelocidadMaxima(80);
+        leon.setAlturaPromedio(1.2);
         animalesPredeterminados.add(leon);
 
         // Ave
@@ -112,6 +115,9 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
         paloma.setNombreCientifico("Columba livia");
         paloma.setEstadoConservacion("Preocupación menor");
         paloma.setPesoPromedio(0.3);
+        paloma.setEsperanzaVida(15);  // Las palomas viven 5-6 años, en escala 15/100
+        paloma.setVelocidadMaxima(77);
+        paloma.setAlturaPromedio(0.25);
         animalesPredeterminados.add(paloma);
 
         // Ave Rapaz
@@ -131,6 +137,9 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
         aguila.setNombreCientifico("Aquila chrysaetos");
         aguila.setEstadoConservacion("Preocupación menor");
         aguila.setPesoPromedio(4.5);
+        aguila.setEsperanzaVida(45);  // Las águilas viven 20-25 años, en escala 45/100
+        aguila.setVelocidadMaxima(320);
+        aguila.setAlturaPromedio(0.9);
         animalesPredeterminados.add(aguila);
 
         // Reptil
@@ -148,6 +157,9 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
         cocodrilo.setNombreCientifico("Crocodylus niloticus");
         cocodrilo.setEstadoConservacion("Preocupación menor");
         cocodrilo.setPesoPromedio(500.0);
+        cocodrilo.setEsperanzaVida(85);  // Los cocodrilos viven 70-100 años, en escala 85/100
+        cocodrilo.setVelocidadMaxima(35);
+        cocodrilo.setAlturaPromedio(0.5);
         animalesPredeterminados.add(cocodrilo);
 
         // Anfibio
@@ -165,6 +177,9 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
         rana.setNombreCientifico("Pelophylax perezi");
         rana.setEstadoConservacion("Preocupación menor");
         rana.setPesoPromedio(0.05);
+        rana.setEsperanzaVida(20);  // Las ranas viven 8-10 años, en escala 20/100
+        rana.setVelocidadMaxima(8);
+        rana.setAlturaPromedio(0.08);
         animalesPredeterminados.add(rana);
 
         // Pez
@@ -179,6 +194,9 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
             "Gris azulado", 
             true
         );
+        tiburonBlanco.setEsperanzaVida(90);  // Los tiburones blancos viven 70+ años, en escala 90/100
+        tiburonBlanco.setVelocidadMaxima(56);
+        tiburonBlanco.setAlturaPromedio(4.5);
         animalesPredeterminados.add(tiburonBlanco);
 
         // Agregar todos los animales predeterminados a la lista global
@@ -313,6 +331,9 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
         animalesPredeterminados.removeIf(a -> a.getNombre().equals(animal.getNombre()) && 
                                              a.getCategoria().equals(animal.getCategoria()));
         
+        // Eliminar de la lista local
+        animales.removeIf(a -> a.getId().equals(animal.getId()));
+
         // Actualizar las listas locales
         actualizarLista();
         
@@ -326,29 +347,52 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
     public void onAnimalEdited(Animal animal) {
         if (animal == null) return;
 
+        // Depuración: mostrar datos del animal editado
+        Toast.makeText(getContext(), "onAnimalEdited: " + animal.getNombre() + " - " + animal.getCategoria(), Toast.LENGTH_LONG).show();
+
         // Si el animal editado pertenece a otra categoría
         if (!animal.getCategoria().equals(categoria)) {
             // Eliminar el animal de la lista global si existe
             animalesGlobales.removeIf(a -> a.getId().equals(animal.getId()));
-            
+            // Eliminar de la lista local
+            animales.removeIf(a -> a.getId().equals(animal.getId()));
+            // Agregar el animal editado a la lista global
+            if (!animalesGlobales.contains(animal)) {
+                animalesGlobales.add(animal);
+            }
+            // Si el usuario está viendo la nueva categoría, agregarlo a la lista local
+            if (animal.getCategoria().equals(categoria)) {
+                addAnimalToList(animal);
+            }
             // Actualizar la vista actual
             actualizarLista();
 
-                // Notificar el cambio de categoría
-                if (categoryChangedListener != null) {
+            // Notificar el cambio de categoría
+            if (categoryChangedListener != null) {
                 categoryChangedListener.onAnimalCategoryChanged(animal, categoria, animal.getCategoria());
-                }
-                
-                Toast.makeText(getContext(), 
-                    "Animal movido a la categoría " + animal.getCategoria(), 
+            }
+            Toast.makeText(getContext(),
+                    "Animal movido a la categoría " + animal.getCategoria(),
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Si el animal pertenece a esta categoría
-        addAnimalToList(animal);
-            
-            // Mostrar mensaje de éxito
+        // Actualizar el animal en la lista local
+        for (int i = 0; i < animales.size(); i++) {
+            if (animales.get(i).getId().equals(animal.getId())) {
+                animales.set(i, animal);
+                break;
+            }
+        }
+        // Actualizar el animal en la lista global
+        for (int i = 0; i < animalesGlobales.size(); i++) {
+            if (animalesGlobales.get(i).getId().equals(animal.getId())) {
+                animalesGlobales.set(i, animal);
+                break;
+            }
+        }
+        actualizarLista();
+
             Toast.makeText(getContext(), 
                 "Animal actualizado correctamente", 
                 Toast.LENGTH_SHORT).show();
@@ -404,14 +448,16 @@ public class AnimalListFragment extends Fragment implements AnimalAdapter.OnAnim
     }
 
     public void mostrarTodosLosAnimales() {
+        // Sincronizar la lista local con la global
+        animales.clear();
+        for (Animal animal : animalesGlobales) {
+            if (animal.getCategoria().equals(categoria)) {
+                animales.add(animal);
+            }
+        }
         // Mostrar solo los animales de la categoría actual
         animalesFiltrados.clear();
-        animalesFiltrados.addAll(
-            animalesGlobales.stream()
-                .filter(animal -> animal.getCategoria().equals(categoria))
-                .collect(Collectors.toList())
-        );
-        
+        animalesFiltrados.addAll(animales);
         if (adapter != null) {
             adapter.actualizarLista(animalesFiltrados);
         }
